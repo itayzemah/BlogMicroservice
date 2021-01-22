@@ -15,16 +15,21 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-webflux-ui
-	implementation group: 'org.springdoc', name: 'springdoc-openapi-webflux-ui', version: '1.5.1'
+	// Spring WEB
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
-	// https://mvnrepository.com/artifact/org.projectlombok/lombok
-	compile group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
+	//Mongo DB
+	compile group: 'org.springframework.data', name: 'spring-data-mongodb', version: '3.1.1'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: '2.4.0'
+	
+	//Lombok
+	compileOnly 'org.projectlombok:lombok:1.18.16'
+	annotationProcessor 'org.projectlombok:lombok:1.18.16'
+	
+	// OpenAPI - Swagger-UI
+	compile group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.4.8'
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.projectreactor:reactor-test'
 }
 
 test {
