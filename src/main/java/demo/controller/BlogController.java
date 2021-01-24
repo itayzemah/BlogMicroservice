@@ -30,7 +30,7 @@ public class BlogController {
 		return this.blogService.create(postBoundary);
 	}
 	
-	@RequestMapping(path = "/byUser/{email}", method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@RequestMapping(path = "/byUser/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostBoundary[] getBlogsByUser(@PathVariable("email") @Email String email, 
 			@RequestParam(name = "filterType", required = false, defaultValue = "") String filterType,
 			@RequestParam(name = "filterValue", required = false, defaultValue = "") String filterValue,
@@ -42,7 +42,7 @@ public class BlogController {
 		return this.blogService.getPostsByUser(email, filterType, filterValue, sortAttribute, sortOrder.equals(SortOrder.ASC),page,size);
 	}
 	
-	@RequestMapping(path = "/byProduct/{productId}", method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@RequestMapping(path = "/byProduct/{productId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostBoundary[] getBlogsByProductId(@PathVariable("productId") String productId, 
 			@RequestParam(name = "filterType", required = false, defaultValue = "") String filterType,
 			@RequestParam(name = "filterValue", required = false, defaultValue = "") String filterValue,
@@ -56,7 +56,7 @@ public class BlogController {
 						sortOrder.equals(SortOrder.ASC),page,size);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostBoundary[] getBlogs(
 			@RequestParam(name = "filterType", required = false, defaultValue = "byCreation") String filterType,
 			@RequestParam(name = "filterValue", required = false, defaultValue = "lastDay") String filterValue,
@@ -65,7 +65,9 @@ public class BlogController {
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
 			@RequestParam(name = "size", required = false, defaultValue = "100") int size){
 				
-		return this.blogService.getAllPosts(filterType, filterValue, sortAttribute, sortOrder.equals(SortOrder.ASC),page,size);
+		PostBoundary[] rv = this.blogService.getAllPosts(filterType, filterValue, sortAttribute, sortOrder.equals(SortOrder.ASC),page,size);
+		System.err.println(rv);
+		return rv;
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)
