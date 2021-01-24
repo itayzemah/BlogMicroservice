@@ -1,4 +1,4 @@
-package demo.controller;
+	package demo.controller;
 
 import javax.validation.constraints.Email;
 
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import demo.boundary.PostBoundary;
 import demo.data.SortOrder;
 import demo.logic.BlogService;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping(path="/blog")
@@ -28,42 +26,50 @@ public class BlogController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Mono<PostBoundary> postBlog(@RequestBody PostBoundary postBoundary){
+	public PostBoundary postBlog(@RequestBody PostBoundary postBoundary){
 		return this.blogService.create(postBoundary);
 	}
 	
 	@RequestMapping(path = "/byUser/{email}", method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public Flux<PostBoundary> getBlogsByUser(@PathVariable("email") @Email String email, 
+	public PostBoundary[] getBlogsByUser(@PathVariable("email") @Email String email, 
 			@RequestParam(name = "filterType", required = false, defaultValue = "") String filterType,
 			@RequestParam(name = "filterValue", required = false, defaultValue = "") String filterValue,
 			@RequestParam(name = "sortBy", required = false, defaultValue = "postingTimestamp") String sortAttribute,
-			@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") SortOrder sortOrder){
+			@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") SortOrder sortOrder,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(name = "size", required = false, defaultValue = "1000") int size){
 				
-		return this.blogService.getPostsByUser(email, filterType, filterValue, sortAttribute, sortOrder.equals(SortOrder.ASC));
+		return this.blogService.getPostsByUser(email, filterType, filterValue, sortAttribute, sortOrder.equals(SortOrder.ASC),page,size);
 	}
 	
 	@RequestMapping(path = "/byProduct/{productId}", method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public Flux<PostBoundary> getBlogsByProductId(@PathVariable("productId") String productId, 
+	public PostBoundary[] getBlogsByProductId(@PathVariable("productId") String productId, 
 			@RequestParam(name = "filterType", required = false, defaultValue = "") String filterType,
 			@RequestParam(name = "filterValue", required = false, defaultValue = "") String filterValue,
 			@RequestParam(name = "sortBy", required = false, defaultValue = "postingTimestamp") String sortAttribute,
-			@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") SortOrder sortOrder){
+			@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") SortOrder sortOrder,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(name = "size", required = false, defaultValue = "100") int size){
 				
-		return this.blogService.getPostsByProduct(productId, filterType, filterValue, sortAttribute, sortOrder.equals(SortOrder.ASC));
+		return this.blogService.
+				getPostsByProduct(productId, filterType, filterValue, sortAttribute,
+						sortOrder.equals(SortOrder.ASC),page,size);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public Flux<PostBoundary> getBlogs(
+	public PostBoundary[] getBlogs(
 			@RequestParam(name = "filterType", required = false, defaultValue = "byCreation") String filterType,
 			@RequestParam(name = "filterValue", required = false, defaultValue = "lastDay") String filterValue,
 			@RequestParam(name = "sortBy", required = false, defaultValue = "postingTimestamp") String sortAttribute,
-			@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") SortOrder sortOrder){
+			@RequestParam(name = "sortOrder", required = false, defaultValue = "ASC") SortOrder sortOrder,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(name = "size", required = false, defaultValue = "100") int size){
 				
-		return this.blogService.getAllPosts(filterType, filterValue, sortAttribute, sortOrder.equals(SortOrder.ASC));
+		return this.blogService.getAllPosts(filterType, filterValue, sortAttribute, sortOrder.equals(SortOrder.ASC),page,size);
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)
-	public Mono<Void> removeAll() {
-		return this.blogService.removeAll();
+	public void removeAll() {
+		this.blogService.removeAll();
 	}
 }
