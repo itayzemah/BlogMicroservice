@@ -27,5 +27,5 @@ public interface BlogDataAccessRepository extends MongoRepository<PostEntity, St
 
 	public List<PostEntity> findAllByPostingTimestampGreaterThanEqual(@Param("postingTimestamp") Date postingTimestamp, Pageable sort);
 	
-
+	public List<PostEntity> findAllByPostingTimestampLessThanEqual(@Param("postingTimestamp") Date postingTimestamp, Pageable sort);
 }

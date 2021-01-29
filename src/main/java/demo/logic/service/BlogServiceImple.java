@@ -101,7 +101,7 @@ public class BlogServiceImple implements BlogService {
 					PageRequest.of(page, size, Sort.by(getSortOrderFromEnum(asc), sortAttribute)));
 			break;
 		case "byCount":
-			rv = this.blogDal.findAll(PageRequest.of(page, size, Sort.by(getSortOrderFromEnum(asc)))).toList();
+			rv = this.blogDal.findAllByPostingTimestampLessThanEqual(new Date(), PageRequest.of(0, Integer.parseInt(filterValue), Sort.by(Direction.DESC , "postingTimestamp")));
 			break;
 
 		}

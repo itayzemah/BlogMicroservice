@@ -66,7 +66,6 @@ public class BlogController {
 			@RequestParam(name = "size", required = false, defaultValue = "100") int size){
 				
 		PostBoundary[] rv = this.blogService.getAllPosts(filterType, filterValue, sortAttribute, sortOrder.equals(SortOrder.ASC),page,size);
-		System.err.println(rv);
 		return rv;
 	}
 	
